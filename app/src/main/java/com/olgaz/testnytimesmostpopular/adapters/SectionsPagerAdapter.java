@@ -5,9 +5,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.olgaz.testnytimesmostpopular.fragments.MostEmailedFragment;
-import com.olgaz.testnytimesmostpopular.fragments.MostSharedFragment;
-import com.olgaz.testnytimesmostpopular.fragments.MostViewedFragment;
+import com.olgaz.testnytimesmostpopular.api.ApiClient;
+import com.olgaz.testnytimesmostpopular.fragments.MostPopularFragment;
 
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
@@ -19,11 +18,11 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return new MostEmailedFragment();
+                return new MostPopularFragment(ApiClient.EMAILED);
             case 1:
-                return new MostSharedFragment();
+                return new MostPopularFragment(ApiClient.SHARED);
             case 2:
-                return new MostViewedFragment();
+                return new MostPopularFragment(ApiClient.VIEWED);
         }
         return null;
     }

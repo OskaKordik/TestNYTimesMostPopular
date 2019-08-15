@@ -4,11 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".fragments.MostEmailedFragment">
+    tools:context=".fragments.MostPopularFragment">
 
-    <TextView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerViewNewsMostPopular"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Most Shared" />
+        android:layout_height="match_parent" />
 
 </LinearLayout>

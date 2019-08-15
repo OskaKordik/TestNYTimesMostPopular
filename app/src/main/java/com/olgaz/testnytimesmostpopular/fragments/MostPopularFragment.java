@@ -1,5 +1,6 @@
 package com.olgaz.testnytimesmostpopular.fragments;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,13 +18,16 @@ import com.olgaz.testnytimesmostpopular.pojo.Results;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MostEmailedFragment extends Fragment implements MostPopularView {
+@SuppressLint("ValidFragment")
+public class MostPopularFragment extends Fragment implements MostPopularView {
     private RecyclerView recyclerViewNews;
     private NewsAdapter adapter;
-    private static final String EMAILED = "emailed";
-    private static final String SHARED = "shared";
-    private static final String VIEWED = "viewed";
     private MostPopularPresenter presenter;
+    private String tabArticle;
+
+    public MostPopularFragment(String tabArticle) {
+        this.tabArticle = tabArticle;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,9 +40,9 @@ public class MostEmailedFragment extends Fragment implements MostPopularView {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View layout = inflater.inflate(R.layout.fragment_most_emailed, container, false);
+        View layout = inflater.inflate(R.layout.fragment_most_popular, container, false);
 
-        recyclerViewNews = layout.findViewById(R.id.recyclerViewNews2);
+        recyclerViewNews = layout.findViewById(R.id.recyclerViewNewsMostPopular);
         adapter = new NewsAdapter();
         adapter.setContext(layout.getContext());
         adapter.setResultsNews(new ArrayList<Results>());
@@ -51,7 +55,7 @@ public class MostEmailedFragment extends Fragment implements MostPopularView {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        presenter.loadData(EMAILED);
+        presenter.loadData(tabArticle);
     }
 
     @Override
@@ -70,5 +74,4 @@ public class MostEmailedFragment extends Fragment implements MostPopularView {
         presenter.disposeDisposable();
         super.onDestroy();
     }
-
 }

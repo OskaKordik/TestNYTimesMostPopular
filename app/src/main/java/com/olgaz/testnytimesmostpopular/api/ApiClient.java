@@ -1,7 +1,5 @@
 package com.olgaz.testnytimesmostpopular.api;
 
-import android.util.Log;
-
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import retrofit2.Retrofit;
@@ -11,6 +9,10 @@ public class ApiClient {
     private static ApiClient apiClient;
     private static Retrofit retrofit;
     private static final String BASE_URL = "https://api.nytimes.com/svc/mostpopular/v2/";
+
+    public static final String EMAILED = "emailed";
+    public static final String SHARED = "shared";
+    public static final String VIEWED = "viewed";
 
     private ApiClient() {
         retrofit = new Retrofit.Builder()
