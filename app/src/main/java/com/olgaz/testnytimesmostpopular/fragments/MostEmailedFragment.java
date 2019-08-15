@@ -17,7 +17,7 @@ import com.olgaz.testnytimesmostpopular.pojo.Results;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MostEmailedFragment extends Fragment {
+public class MostEmailedFragment extends Fragment implements MostPopularView {
     private RecyclerView recyclerViewNews;
     private NewsAdapter adapter;
     private static final String EMAILED = "emailed";
@@ -54,6 +54,7 @@ public class MostEmailedFragment extends Fragment {
         presenter.loadData(EMAILED);
     }
 
+    @Override
     public void showData(List<Results> news) {
         adapter.setResultsNews(news);
     }

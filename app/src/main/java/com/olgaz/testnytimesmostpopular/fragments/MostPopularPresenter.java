@@ -14,11 +14,11 @@ import io.reactivex.schedulers.Schedulers;
 class MostPopularPresenter {
     private static final String API_KEY = "7wSLHtDihxnGsyVtzvQJjAzDGARhsM0V";
     private static final String PERIOD = "30";
-    private MostEmailedFragment fragment;
+    private MostPopularView view;
     private Disposable disposable;
 
-    public MostPopularPresenter(MostEmailedFragment fragment) {
-        this.fragment = fragment;
+    public MostPopularPresenter(MostPopularView view) {
+        this.view = view;
     }
 
     void loadData(String tabArticle) {
@@ -30,7 +30,7 @@ class MostPopularPresenter {
                 .subscribe(new Consumer<News>() {
                     @Override
                     public void accept(News news) throws Exception {
-                        fragment.showData(news.getResults());
+                        view.showData(news.getResults());
                     }
                 }, new Consumer<Throwable>() {
                     @Override
