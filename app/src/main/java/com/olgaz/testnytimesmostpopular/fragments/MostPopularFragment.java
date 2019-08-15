@@ -2,7 +2,6 @@ package com.olgaz.testnytimesmostpopular.fragments;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -30,14 +29,6 @@ public class MostPopularFragment extends Fragment implements MostPopularView {
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (savedInstanceState != null) {
-            //возврат к исходному состоянию
-        }
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_most_popular, container, false);
@@ -61,12 +52,6 @@ public class MostPopularFragment extends Fragment implements MostPopularView {
     @Override
     public void showData(List<Results> news) {
         adapter.setResultsNews(news);
-    }
-
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        //сохранение исходного состояния
     }
 
     @Override
