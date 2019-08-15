@@ -1,7 +1,6 @@
 package com.olgaz.testnytimesmostpopular.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.olgaz.testnytimesmostpopular.DetailActivity;
 import com.olgaz.testnytimesmostpopular.R;
 import com.olgaz.testnytimesmostpopular.pojo.Results;
 import com.squareup.picasso.Picasso;
@@ -19,10 +17,14 @@ import java.util.List;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder> {
     private List<Results> resultsNews;
-    private Context context;
+    private OnNewsClickListener onNewsClickListener;
 
-    public void setContext(Context context) {
-        this.context = context;
+    public interface OnNewsClickListener {
+        void onNewsClick(int position);
+    }
+
+    public void setOnNewsClickListener(OnNewsClickListener onNewsClickListener) {
+        this.onNewsClickListener = onNewsClickListener;
     }
 
     public List<Results> getResultsNews() {
@@ -32,6 +34,11 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
     public void setResultsNews(List<Results> resultsNews) {
         this.resultsNews = resultsNews;
         notifyDataSetChanged();
+    }
+
+    @Override
+    public int getItemCount() {
+        return resultsNews.size();
     }
 
     @NonNull
@@ -59,10 +66,6 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
         Picasso.get().load(urlImage).into(newsViewHolder.imageNews);
     }
 
-    @Override
-    public int getItemCount() {
-        return resultsNews.size();
-    }
 
     class NewsViewHolder extends RecyclerView.ViewHolder {
         private TextView title;
@@ -78,14 +81,10 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
             publishedDate = itemView.findViewById(R.id.published_date);
             section = itemView.findViewById(R.id.textViewSection);
             imageNews = itemView.findViewById(R.id.imageNews);
-
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(context, DetailActivity.class);
-                    String detailNewsUrl = resultsNews.get(getAdapterPosition()).getUrl();
-                    intent.putExtra("detailUrl", detailNewsUrl);
-                    context.startActivity(intent);
+                    if (onNewsClickListener != null) onNewsClickListener.onNewsClick(getAdapterPosition());
                 }
             });
         }
