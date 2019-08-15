@@ -9,12 +9,10 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.olgaz.testnytimesmostpopular.adapters.NewsAdapter;
 import com.olgaz.testnytimesmostpopular.api.ApiClient;
 import com.olgaz.testnytimesmostpopular.api.ApiService;
-import com.olgaz.testnytimesmostpopular.api.NetworkUtils;
 import com.olgaz.testnytimesmostpopular.pojo.News;
 import com.olgaz.testnytimesmostpopular.pojo.Results;
 
@@ -50,8 +48,6 @@ public class MainActivity extends AppCompatActivity {
         adapter.setResultsNews(new ArrayList<Results>());
         recyclerViewNews.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewNews.setAdapter(adapter);
-
-//        adapter.setResultsNews(NetworkUtils.getResultsNews(NetworkUtils.EMAILED));
 
         ApiClient apiClient = ApiClient.getInstance();
         ApiService apiService = apiClient.getApiService();
