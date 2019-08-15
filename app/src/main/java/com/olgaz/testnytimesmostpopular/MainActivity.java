@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerViewNews = findViewById(R.id.recyclerViewNews);
         adapter = new NewsAdapter();
+        adapter.setContext(this);
         adapter.setResultsNews(new ArrayList<Results>());
         recyclerViewNews.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewNews.setAdapter(adapter);

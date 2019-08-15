@@ -1,9 +1,11 @@
 package com.olgaz.testnytimesmostpopular;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebSettings;
@@ -24,24 +26,25 @@ public class DetailActivity extends AppCompatActivity {
         WebView webViewDetail = findViewById(R.id.webViewDetail);
         //кэширования для загружаемого контента
         webViewDetail.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
-        webViewDetail.loadUrl(getIntent().getStringExtra("detailUrl"));
+        String urlDetail = getIntent().getStringExtra("detailUrl");
+        webViewDetail.loadUrl(urlDetail);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the app bar.
-        getMenuInflater().inflate(R.menu.menu_detail, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_add_to_favorites:
-                item.setIcon(R.drawable.baseline_favorite_white_24);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the app bar.
+//        getMenuInflater().inflate(R.menu.menu_detail, menu);
+//        return super.onCreateOptionsMenu(menu);
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()) {
+//            case R.id.action_add_to_favorites:
+//                item.setIcon(R.drawable.baseline_favorite_white_24);
+//                return true;
+//            default:
+//                return super.onOptionsItemSelected(item);
+//        }
+//    }
 }

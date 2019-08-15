@@ -1,8 +1,10 @@
 package com.olgaz.testnytimesmostpopular.adapters;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.olgaz.testnytimesmostpopular.DetailActivity;
+import com.olgaz.testnytimesmostpopular.MainActivity;
 import com.olgaz.testnytimesmostpopular.R;
 import com.olgaz.testnytimesmostpopular.pojo.Results;
 import com.squareup.picasso.Picasso;
@@ -18,6 +21,11 @@ import java.util.List;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder> {
     private List<Results> resultsNews;
+    private Context context;
+
+    public void setContext(Context context) {
+        this.context = context;
+    }
 
     public List<Results> getResultsNews() {
         return resultsNews;
@@ -76,10 +84,10 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(v.getContext(), DetailActivity.class);
+                    Intent intent = new Intent(context, DetailActivity.class);
                     String detailNewsUrl = resultsNews.get(getAdapterPosition()).getUrl();
                     intent.putExtra("detailUrl", detailNewsUrl);
-                    itemView.getContext().startActivity(intent);
+                    context.startActivity(intent);
                 }
             });
         }
