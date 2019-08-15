@@ -1,10 +1,10 @@
-package com.olgaz.testnytimesmostpopular.pojo;
+package com.olgaz.testnytimesmostpopular.model;
 
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class News {
+public class NewsResults {
 
     @SerializedName("status")
     @Expose
@@ -17,7 +17,7 @@ public class News {
     private int numResults;
     @SerializedName("results")
     @Expose
-    private List<Results> results = null;
+    private List<News> results = null;
 
     public String getStatus() {
         return status;
@@ -43,11 +43,11 @@ public class News {
         this.numResults = numResults;
     }
 
-    public List<Results> getResults() {
+    public List<News> getResults() {
         return results;
     }
 
-    public void setResults(List<Results> results) {
+    public void setResults(List<News> results) {
         this.results = results;
     }
 

@@ -4,7 +4,7 @@ import android.util.Log;
 
 import com.olgaz.testnytimesmostpopular.api.ApiClient;
 import com.olgaz.testnytimesmostpopular.api.ApiService;
-import com.olgaz.testnytimesmostpopular.pojo.News;
+import com.olgaz.testnytimesmostpopular.model.NewsResults;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -27,10 +27,10 @@ class MostPopularPresenter {
         disposable = apiService.getResponseNews(tabArticle, PERIOD, API_KEY)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<News>() {
+                .subscribe(new Consumer<NewsResults>() {
                     @Override
-                    public void accept(News news) throws Exception {
-                        view.showData(news.getResults());
+                    public void accept(NewsResults newsResults) throws Exception {
+                        view.showData(newsResults.getResults());
                     }
                 }, new Consumer<Throwable>() {
                     @Override

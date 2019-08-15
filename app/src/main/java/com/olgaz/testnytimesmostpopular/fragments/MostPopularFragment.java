@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import com.olgaz.testnytimesmostpopular.DetailActivity;
 import com.olgaz.testnytimesmostpopular.R;
 import com.olgaz.testnytimesmostpopular.adapters.NewsAdapter;
-import com.olgaz.testnytimesmostpopular.pojo.Results;
+import com.olgaz.testnytimesmostpopular.model.News;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,13 +40,13 @@ public class MostPopularFragment extends Fragment implements MostPopularView {
         recyclerViewNews = layout.findViewById(R.id.recyclerViewNewsMostPopular);
         adapter = new NewsAdapter();
 
-        adapter.setResultsNews(new ArrayList<Results>());
+        adapter.setNewsNews(new ArrayList<News>());
         recyclerViewNews.setLayoutManager(new LinearLayoutManager(layout.getContext()));
         adapter.setOnNewsClickListener(new NewsAdapter.OnNewsClickListener() {
             @Override
             public void onNewsClick(int position) {
                 Intent intent = new Intent(layout.getContext(), DetailActivity.class);
-                String detailNewsUrl = adapter.getResultsNews().get(position).getUrl();
+                String detailNewsUrl = adapter.getNewsNews().get(position).getUrl();
                 intent.putExtra("detailUrl", detailNewsUrl);
                 layout.getContext().startActivity(intent);
             }
@@ -63,8 +63,8 @@ public class MostPopularFragment extends Fragment implements MostPopularView {
     }
 
     @Override
-    public void showData(List<Results> news) {
-        adapter.setResultsNews(news);
+    public void showData(List<News> news) {
+        adapter.setNewsNews(news);
     }
 
     @Override

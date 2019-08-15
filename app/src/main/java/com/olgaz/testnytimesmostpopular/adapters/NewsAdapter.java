@@ -1,6 +1,5 @@
 package com.olgaz.testnytimesmostpopular.adapters;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,13 +9,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.olgaz.testnytimesmostpopular.R;
-import com.olgaz.testnytimesmostpopular.pojo.Results;
+import com.olgaz.testnytimesmostpopular.model.News;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder> {
-    private List<Results> resultsNews;
+    private List<News> newsNews;
     private OnNewsClickListener onNewsClickListener;
 
     public interface OnNewsClickListener {
@@ -27,18 +26,18 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
         this.onNewsClickListener = onNewsClickListener;
     }
 
-    public List<Results> getResultsNews() {
-        return resultsNews;
+    public List<News> getNewsNews() {
+        return newsNews;
     }
 
-    public void setResultsNews(List<Results> resultsNews) {
-        this.resultsNews = resultsNews;
+    public void setNewsNews(List<News> newsNews) {
+        this.newsNews = newsNews;
         notifyDataSetChanged();
     }
 
     @Override
     public int getItemCount() {
-        return resultsNews.size();
+        return newsNews.size();
     }
 
     @NonNull
@@ -50,7 +49,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull NewsViewHolder newsViewHolder, int i) {
-        Results news = resultsNews.get(i);
+        News news = newsNews.get(i);
         newsViewHolder.title.setText(news.getTitle());
         newsViewHolder.description.setText(news.getDescription());
         newsViewHolder.publishedDate.setText(news.getPublishedDate());

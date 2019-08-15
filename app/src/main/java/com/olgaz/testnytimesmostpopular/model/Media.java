@@ -1,4 +1,4 @@
-package com.olgaz.testnytimesmostpopular.pojo;
+package com.olgaz.testnytimesmostpopular.model;
 
 import java.util.List;
 import com.google.gson.annotations.Expose;

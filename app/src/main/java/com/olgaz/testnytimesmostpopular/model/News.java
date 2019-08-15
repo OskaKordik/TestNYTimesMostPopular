@@ -1,10 +1,11 @@
-package com.olgaz.testnytimesmostpopular.pojo;
+package com.olgaz.testnytimesmostpopular.model;
 
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Results {
+
+public class News {
     @SerializedName("url")
     @Expose
     private String url;
