@@ -1,77 +1,36 @@
 package com.olgaz.testnytimesmostpopular;
 
 import android.content.Intent;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.olgaz.testnytimesmostpopular.adapters.NewsAdapter;
-import com.olgaz.testnytimesmostpopular.api.ApiClient;
-import com.olgaz.testnytimesmostpopular.api.ApiService;
-import com.olgaz.testnytimesmostpopular.pojo.News;
-import com.olgaz.testnytimesmostpopular.pojo.Results;
-
-import java.util.ArrayList;
-
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
+import com.olgaz.testnytimesmostpopular.adapters.SectionsPagerAdapter;
 
 public class MainActivity extends AppCompatActivity {
-
-    private RecyclerView recyclerViewNews;
-    private NewsAdapter adapter;
-    private static final String API_KEY = "7wSLHtDihxnGsyVtzvQJjAzDGARhsM0V";
-    private static final String PERIOD = "30";
-    private static final String EMAILED = "emailed";
-    private static final String SHARED = "shared";
-    private static final String VIEWED = "viewed";
-    private Disposable disposable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        recyclerViewNews = findViewById(R.id.recyclerViewNews);
-        adapter = new NewsAdapter();
-        adapter.setContext(this);
-        adapter.setResultsNews(new ArrayList<Results>());
-        recyclerViewNews.setLayoutManager(new LinearLayoutManager(this));
-        recyclerViewNews.setAdapter(adapter);
+        SectionsPagerAdapter pagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        ViewPager pager = findViewById(R.id.pager);
+        pager.setAdapter(pagerAdapter);
 
-        ApiClient apiClient = ApiClient.getInstance();
-        ApiService apiService = apiClient.getApiService();
-        disposable = apiService.getResponseNews(VIEWED, PERIOD, API_KEY)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<News>() {
-                    @Override
-                    public void accept(News news) throws Exception {
-                        adapter.setResultsNews(news.getResults());
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        Log.i("MyInfo", throwable.getMessage());
-                    }
-                });
-
-
+        TabLayout tabLayout = findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(pager);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the app bar.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return super.onCreateOptionsMenu(menu);
     }
@@ -85,11 +44,5 @@ public class MainActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        if (disposable != null) disposable.dispose();
-        super.onDestroy();
     }
 }
