@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.olgaz.testnytimesmostpopular.adapters.NewsAdapter;
 import com.olgaz.testnytimesmostpopular.api.ApiClient;
 import com.olgaz.testnytimesmostpopular.api.ApiService;
+import com.olgaz.testnytimesmostpopular.api.NetworkUtils;
 import com.olgaz.testnytimesmostpopular.pojo.News;
 import com.olgaz.testnytimesmostpopular.pojo.Results;
 
@@ -50,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
         recyclerViewNews.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewNews.setAdapter(adapter);
 
+//        adapter.setResultsNews(NetworkUtils.getResultsNews(NetworkUtils.EMAILED));
+
         ApiClient apiClient = ApiClient.getInstance();
         ApiService apiService = apiClient.getApiService();
         disposable = apiService.getResponseNews(VIEWED, PERIOD, API_KEY)
@@ -63,10 +66,11 @@ public class MainActivity extends AppCompatActivity {
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
-                        Toast.makeText(MainActivity.this, throwable.getMessage(), Toast.LENGTH_LONG).show();
                         Log.i("MyInfo", throwable.getMessage());
                     }
                 });
+
+
     }
 
     @Override

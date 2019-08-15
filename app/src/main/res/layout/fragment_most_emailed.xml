@@ -6,9 +6,9 @@
     android:orientation="vertical"
     tools:context=".fragments.MostEmailedFragment">
 
-    <TextView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerViewNews2"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Most Emailed" />
+        android:layout_height="match_parent" />
 
 </LinearLayout>
