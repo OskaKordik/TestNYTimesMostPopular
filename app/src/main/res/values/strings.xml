@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">NYTimes Most Popular</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="add_to_favorites">Add to favorites</string>
+    <string name="open_favorites">Favorites</string>
+
+</resources>
