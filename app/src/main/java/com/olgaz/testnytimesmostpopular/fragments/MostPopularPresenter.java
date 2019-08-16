@@ -35,7 +35,7 @@ class MostPopularPresenter {
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
-                        Log.i("MyInfo", throwable.getMessage());
+                        view.showError(throwable.getMessage());
                     }
                 });
 

@@ -6,9 +6,11 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.olgaz.testnytimesmostpopular.DetailActivity;
 import com.olgaz.testnytimesmostpopular.R;
@@ -77,6 +79,12 @@ public class MostPopularFragment extends Fragment implements MostPopularView {
     @Override
     public void showData(List<News> news) {
         adapter.setNewsNews(news);
+    }
+
+    @Override
+    public void showError(String error) {
+        Toast.makeText(getContext(), "Network unavailable", Toast.LENGTH_SHORT).show();
+        Log.i("MyInfo", error);
     }
 
     @Override

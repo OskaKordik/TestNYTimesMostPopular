@@ -5,4 +5,5 @@ import java.util.List;
 
 public interface MostPopularView {
     void showData(List<News> news);
+    void showError(String error);
 }
