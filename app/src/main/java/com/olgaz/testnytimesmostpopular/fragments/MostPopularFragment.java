@@ -2,8 +2,10 @@ package com.olgaz.testnytimesmostpopular.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -20,11 +22,12 @@ import com.olgaz.testnytimesmostpopular.model.News;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MostPopularFragment extends Fragment implements MostPopularView {
+public class MostPopularFragment extends Fragment implements MostPopularView, SwipeRefreshLayout.OnRefreshListener {
     private RecyclerView recyclerViewNews;
     private NewsAdapter adapter;
     private MostPopularPresenter presenter;
     private String tabArticle;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     // newInstance constructor for creating fragment with arguments
     public static MostPopularFragment newInstance(String tabArticle) {
@@ -66,6 +69,9 @@ public class MostPopularFragment extends Fragment implements MostPopularView {
         });
         recyclerViewNews.setAdapter(adapter);
 
+        mSwipeRefreshLayout = layout.findViewById(R.id.swipe_container);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
+
         return layout;
     }
 
@@ -91,5 +97,16 @@ public class MostPopularFragment extends Fragment implements MostPopularView {
     public void onDestroy() {
         presenter.disposeDisposable();
         super.onDestroy();
+    }
+
+    @Override
+    public void onRefresh() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mSwipeRefreshLayout.setRefreshing(false);
+                presenter.loadData(tabArticle);
+            }
+        }, 1000);
     }
 }
