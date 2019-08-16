@@ -1,6 +1,5 @@
 package com.olgaz.testnytimesmostpopular.fragments;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -19,15 +18,27 @@ import com.olgaz.testnytimesmostpopular.model.News;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressLint("ValidFragment")
 public class MostPopularFragment extends Fragment implements MostPopularView {
     private RecyclerView recyclerViewNews;
     private NewsAdapter adapter;
     private MostPopularPresenter presenter;
     private String tabArticle;
 
-    public MostPopularFragment(String tabArticle) {
-        this.tabArticle = tabArticle;
+    // newInstance constructor for creating fragment with arguments
+    public static MostPopularFragment newInstance(String tabArticle) {
+        MostPopularFragment mostPopularFragment = new MostPopularFragment();
+        Bundle args = new Bundle();
+        args.putString("tabArticle", tabArticle);
+        mostPopularFragment.setArguments(args);
+        return mostPopularFragment;
+    }
+
+    // Store instance variables based on arguments passed
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        assert getArguments() != null;
+        tabArticle = getArguments().getString("tabArticle");
     }
 
     @Override
@@ -59,6 +70,7 @@ public class MostPopularFragment extends Fragment implements MostPopularView {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        // load data from network
         presenter.loadData(tabArticle);
     }
 

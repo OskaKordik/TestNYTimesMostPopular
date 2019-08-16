@@ -18,11 +18,11 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return new MostPopularFragment(ApiClient.EMAILED);
+                return MostPopularFragment.newInstance(ApiClient.EMAILED);
             case 1:
-                return new MostPopularFragment(ApiClient.SHARED);
+                return MostPopularFragment.newInstance(ApiClient.SHARED);
             case 2:
-                return new MostPopularFragment(ApiClient.VIEWED);
+                return MostPopularFragment.newInstance(ApiClient.VIEWED);
         }
         return null;
     }
