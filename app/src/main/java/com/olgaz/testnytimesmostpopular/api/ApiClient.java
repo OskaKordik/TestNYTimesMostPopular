@@ -8,17 +8,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ApiClient {
     private static ApiClient apiClient;
     private static Retrofit retrofit;
-    private static final String BASE_URL = "https://api.nytimes.com/svc/mostpopular/v2/";
-
-    public static final String EMAILED = "emailed";
-    public static final String SHARED = "shared";
-    public static final String VIEWED = "viewed";
 
     private ApiClient() {
         retrofit = new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .baseUrl(BASE_URL)
+                .baseUrl(ApiConstants.BASE_URL)
                 .build();
     }
 

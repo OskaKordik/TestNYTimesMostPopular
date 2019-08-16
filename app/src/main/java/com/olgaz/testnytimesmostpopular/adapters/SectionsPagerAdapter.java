@@ -5,7 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.olgaz.testnytimesmostpopular.api.ApiClient;
+import com.olgaz.testnytimesmostpopular.api.ApiConstants;
 import com.olgaz.testnytimesmostpopular.fragments.MostPopularFragment;
 
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
@@ -18,11 +18,11 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return MostPopularFragment.newInstance(ApiClient.EMAILED);
+                return MostPopularFragment.newInstance(ApiConstants.EMAILED);
             case 1:
-                return MostPopularFragment.newInstance(ApiClient.SHARED);
+                return MostPopularFragment.newInstance(ApiConstants.SHARED);
             case 2:
-                return MostPopularFragment.newInstance(ApiClient.VIEWED);
+                return MostPopularFragment.newInstance(ApiConstants.VIEWED);
         }
         return null;
     }

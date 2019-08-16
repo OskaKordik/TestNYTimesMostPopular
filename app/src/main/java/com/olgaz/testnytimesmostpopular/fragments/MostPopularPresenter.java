@@ -1,8 +1,7 @@
 package com.olgaz.testnytimesmostpopular.fragments;
 
-import android.util.Log;
-
 import com.olgaz.testnytimesmostpopular.api.ApiClient;
+import com.olgaz.testnytimesmostpopular.api.ApiConstants;
 import com.olgaz.testnytimesmostpopular.api.ApiService;
 import com.olgaz.testnytimesmostpopular.model.NewsResults;
 
@@ -12,8 +11,6 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 class MostPopularPresenter {
-    private static final String API_KEY = "7wSLHtDihxnGsyVtzvQJjAzDGARhsM0V";
-    private static final String PERIOD = "30";
     private MostPopularView view;
     private Disposable disposable;
 
@@ -24,7 +21,7 @@ class MostPopularPresenter {
     void loadData(String tabArticle) {
         ApiClient apiClient = ApiClient.getInstance();
         ApiService apiService = apiClient.getApiService();
-        disposable = apiService.getResponseNews(tabArticle, PERIOD, API_KEY)
+        disposable = apiService.getResponseNews(tabArticle, ApiConstants.PERIOD, ApiConstants.API_KEY)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<NewsResults>() {
@@ -38,7 +35,6 @@ class MostPopularPresenter {
                         view.showError(throwable.getMessage());
                     }
                 });
-
     }
 
     void disposeDisposable() {
