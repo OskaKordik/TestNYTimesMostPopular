@@ -22,7 +22,7 @@ import com.olgaz.testnytimesmostpopular.model.News;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MostPopularFragment extends Fragment implements MostPopularView, SwipeRefreshLayout.OnRefreshListener {
+public class MostPopularFragment extends Fragment implements MostPopularView {
     private RecyclerView recyclerViewNews;
     private NewsAdapter adapter;
     private MostPopularPresenter presenter;
@@ -70,7 +70,18 @@ public class MostPopularFragment extends Fragment implements MostPopularView, Sw
         recyclerViewNews.setAdapter(adapter);
 
         mSwipeRefreshLayout = layout.findViewById(R.id.swipe_container);
-        mSwipeRefreshLayout.setOnRefreshListener(this);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mSwipeRefreshLayout.setRefreshing(false);
+                        presenter.loadData(tabArticle);
+                    }
+                }, 1000);
+            }
+        });
 
         return layout;
     }
@@ -97,16 +108,5 @@ public class MostPopularFragment extends Fragment implements MostPopularView, Sw
     public void onDestroy() {
         presenter.disposeDisposable();
         super.onDestroy();
-    }
-
-    @Override
-    public void onRefresh() {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mSwipeRefreshLayout.setRefreshing(false);
-                presenter.loadData(tabArticle);
-            }
-        }, 1000);
     }
 }
