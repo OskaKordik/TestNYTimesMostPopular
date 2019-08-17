@@ -62,7 +62,7 @@ public class MostPopularFragment extends Fragment implements MostPopularView {
                              Bundle savedInstanceState) {
         final View layout = inflater.inflate(R.layout.fragment_most_popular, container, false);
 
-        presenter = new MostPopularPresenter(this);
+        presenter = new MostPopularPresenter(this, layout.getContext());
 
         recyclerViewNews = layout.findViewById(R.id.recyclerViewNewsMostPopular);
         adapter = new NewsAdapter();
@@ -76,6 +76,10 @@ public class MostPopularFragment extends Fragment implements MostPopularView {
                 String detailNewsUrl = adapter.getNewsNews().get(position).getUrl();
                 intent.putExtra("detailUrl", detailNewsUrl);
                 layout.getContext().startActivity(intent);
+
+                // ПОТОМ УДАЛИТЬ!
+                presenter.insertNewsToDB(adapter.getNewsNews().get(position));
+                // -------------
             }
         });
         recyclerViewNews.setAdapter(adapter);
@@ -110,9 +114,9 @@ public class MostPopularFragment extends Fragment implements MostPopularView {
     }
 
     @Override
-    public void showError(String error) {
-        Toast.makeText(getContext(), "Network unavailable", Toast.LENGTH_SHORT).show();
-        Log.i("MyInfo", error);
+    public void showInfo(String info) {
+        Toast.makeText(getContext(), info, Toast.LENGTH_SHORT).show();
+        Log.i("MyInfo", info);
     }
 
     @Override

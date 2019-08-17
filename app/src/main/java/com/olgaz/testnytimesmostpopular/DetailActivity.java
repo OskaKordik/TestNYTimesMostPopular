@@ -1,11 +1,8 @@
 package com.olgaz.testnytimesmostpopular;
 
-import android.content.Intent;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebSettings;
@@ -20,8 +17,8 @@ public class DetailActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         WebView webViewDetail = findViewById(R.id.webViewDetail);
         //кэширования для загружаемого контента
@@ -29,7 +26,7 @@ public class DetailActivity extends AppCompatActivity {
         String urlDetail = getIntent().getStringExtra("detailUrl");
         webViewDetail.loadUrl(urlDetail);
     }
-
+//
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {
 //        // Inflate the menu; this adds items to the app bar.
@@ -47,4 +44,10 @@ public class DetailActivity extends AppCompatActivity {
 //                return super.onOptionsItemSelected(item);
 //        }
 //    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
 }

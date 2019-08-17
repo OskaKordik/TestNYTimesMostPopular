@@ -1,6 +1,7 @@
 package com.olgaz.testnytimesmostpopular.fragments;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -28,34 +29,12 @@ public class FavoritesFragment extends Fragment implements MostPopularView {
     private RecyclerView recyclerViewNews;
     private NewsAdapter adapter;
     private MostPopularPresenter presenter;
-    private String tabArticle;
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
-    // newInstance constructor for creating fragment with arguments
-//    public static MostPopularFragment newInstance(String tabArticle) {
-//        MostPopularFragment mostPopularFragment = new MostPopularFragment();
-//        Bundle args = new Bundle();
-//        args.putString("tabArticle", tabArticle);
-//        mostPopularFragment.setArguments(args);
-//        return mostPopularFragment;
-//    }
 
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putString("tabArticle", tabArticle);
-    }
-
-    // Store instance variables based on arguments passed
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (savedInstanceState != null) tabArticle = savedInstanceState.getString("tabArticle");
-        else {
-//            assert getArguments() != null;
-//            tabArticle = getArguments().getString("tabArticle");
-            tabArticle = ApiConstants.EMAILED;
-        }
     }
 
     @Override
@@ -63,7 +42,7 @@ public class FavoritesFragment extends Fragment implements MostPopularView {
                              Bundle savedInstanceState) {
         final View layout = inflater.inflate(R.layout.fragment_most_popular, container, false);
 
-        presenter = new MostPopularPresenter(this);
+        presenter = new MostPopularPresenter(this, getContext());
 
         recyclerViewNews = layout.findViewById(R.id.recyclerViewNewsMostPopular);
         adapter = new NewsAdapter();
@@ -101,7 +80,7 @@ public class FavoritesFragment extends Fragment implements MostPopularView {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        // load data from network
+        // load data from db
         presenter.loadDataFromDB();
     }
 
@@ -111,14 +90,14 @@ public class FavoritesFragment extends Fragment implements MostPopularView {
     }
 
     @Override
-    public void showError(String error) {
-        Toast.makeText(getContext(), "Database unavailable", Toast.LENGTH_SHORT).show();
-        Log.i("MyInfo", error);
+    public void showInfo(String info) {
+        Toast.makeText(getContext(), info, Toast.LENGTH_SHORT).show();
+        Log.i("MyInfo", info);
     }
 
     @Override
     public void onDestroy() {
-        presenter.disposeDisposable();
+        presenter.closeDB();
         super.onDestroy();
     }
 }

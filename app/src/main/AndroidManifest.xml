@@ -23,21 +23,11 @@
 
         <activity
             android:name=".DetailActivity"
-            android:label=""
-            android:parentActivityName=".MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
-        </activity>
+            android:label="" />
 
         <activity
             android:name=".FavoritesActivity"
-            android:label=""
-            android:parentActivityName=".MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
-        </activity>
+            android:label="" />
 
     </application>
 

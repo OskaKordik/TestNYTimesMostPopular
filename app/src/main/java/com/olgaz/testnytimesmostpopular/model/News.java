@@ -64,6 +64,17 @@ public class News {
     @Expose
     private String uri;
 
+    public News(Long id, String url, String section, String title, String description, String publishedDate, String source, List<Media> media) {
+        this.id = id;
+        this.url = url;
+        this.section = section;
+        this.title = title;
+        this.description = description;
+        this.publishedDate = publishedDate;
+        this.source = source;
+        this.media = media;
+    }
+
     public String getUrl() {
         return url;
     }
