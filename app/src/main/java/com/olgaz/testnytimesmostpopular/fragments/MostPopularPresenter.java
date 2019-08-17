@@ -41,4 +41,7 @@ class MostPopularPresenter {
         if (disposable != null) disposable.dispose();
     }
 
+    public void loadDataFromDB() {
+        view.showError("данные еще не загружены");
+    }
 }

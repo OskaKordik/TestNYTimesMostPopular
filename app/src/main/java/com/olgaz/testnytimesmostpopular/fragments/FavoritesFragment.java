@@ -1,5 +1,6 @@
 package com.olgaz.testnytimesmostpopular.fragments;
 
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,27 +19,26 @@ import android.widget.Toast;
 import com.olgaz.testnytimesmostpopular.DetailActivity;
 import com.olgaz.testnytimesmostpopular.R;
 import com.olgaz.testnytimesmostpopular.adapters.NewsAdapter;
+import com.olgaz.testnytimesmostpopular.api.ApiConstants;
 import com.olgaz.testnytimesmostpopular.model.News;
 
 import java.util.ArrayList;
 import java.util.List;
-
-public class MostPopularFragment extends Fragment implements MostPopularView {
+public class FavoritesFragment extends Fragment implements MostPopularView {
     private RecyclerView recyclerViewNews;
     private NewsAdapter adapter;
     private MostPopularPresenter presenter;
     private String tabArticle;
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
-
     // newInstance constructor for creating fragment with arguments
-    public static MostPopularFragment newInstance(String tabArticle) {
-        MostPopularFragment mostPopularFragment = new MostPopularFragment();
-        Bundle args = new Bundle();
-        args.putString("tabArticle", tabArticle);
-        mostPopularFragment.setArguments(args);
-        return mostPopularFragment;
-    }
+//    public static MostPopularFragment newInstance(String tabArticle) {
+//        MostPopularFragment mostPopularFragment = new MostPopularFragment();
+//        Bundle args = new Bundle();
+//        args.putString("tabArticle", tabArticle);
+//        mostPopularFragment.setArguments(args);
+//        return mostPopularFragment;
+//    }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
@@ -52,8 +52,9 @@ public class MostPopularFragment extends Fragment implements MostPopularView {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) tabArticle = savedInstanceState.getString("tabArticle");
         else {
-            assert getArguments() != null;
-            tabArticle = getArguments().getString("tabArticle");
+//            assert getArguments() != null;
+//            tabArticle = getArguments().getString("tabArticle");
+            tabArticle = ApiConstants.EMAILED;
         }
     }
 
@@ -88,7 +89,7 @@ public class MostPopularFragment extends Fragment implements MostPopularView {
                     @Override
                     public void run() {
                         mSwipeRefreshLayout.setRefreshing(false);
-                        presenter.loadData(tabArticle);
+                        presenter.loadDataFromDB();
                     }
                 }, 1000);
             }
@@ -101,7 +102,7 @@ public class MostPopularFragment extends Fragment implements MostPopularView {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         // load data from network
-        presenter.loadData(tabArticle);
+        presenter.loadDataFromDB();
     }
 
     @Override
@@ -111,7 +112,7 @@ public class MostPopularFragment extends Fragment implements MostPopularView {
 
     @Override
     public void showError(String error) {
-        Toast.makeText(getContext(), "Network unavailable", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Database unavailable", Toast.LENGTH_SHORT).show();
         Log.i("MyInfo", error);
     }
 
