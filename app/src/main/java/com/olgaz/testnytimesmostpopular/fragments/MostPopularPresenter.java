@@ -39,7 +39,7 @@ class MostPopularPresenter {
         try {
             database = dbHelper.getWritableDatabase();
         } catch (SQLiteException e) {
-            this.view.showInfo("Ошибка БД");
+            this.view.showInfo("Database unavailable");
         }
     }
 
@@ -94,7 +94,7 @@ class MostPopularPresenter {
             }
             cursor.close();
         } catch (SQLiteException e) {
-            this.view.showInfo("Не удалось прочитать данные");
+            this.view.showInfo("Failed to read from DB");
             Log.i("MyInfo", e.getMessage());
         }
 
@@ -116,13 +116,13 @@ class MostPopularPresenter {
             try {
                 // Insert the new entry into the DB.
                 database.insert(DBNewsContract.NewsEntry.TABLE_NAME, null, newsValues);
-                view.showInfo("Добавлено в избранное");
+                view.showInfo("Added to favorites");
             } catch (SQLiteException e) {
-                this.view.showInfo("Не удалось добавить данные");
+                this.view.showInfo("Error adding to favorites");
             }
 
         } else {
-            view.showInfo("передан пустой объект!");
+            view.showInfo("Empty object passed!");
         }
     }
 
