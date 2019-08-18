@@ -79,13 +79,13 @@ public class MostPopularFragment extends Fragment implements MostPopularView {
                 b.putString("detailUrl", detailNewsUrl);
                 b.putString("section", news.getSection());
                 b.putString("title", news.getTitle());
+                b.putString("description", news.getDescription());
+                b.putString("publishedDate", news.getPublishedDate());
+                b.putString("source", news.getSource());
+                b.putString("mediaUrl", news.getMedia().get(0).getMediaMetadata().get(1).getUrl());
 
                 intent.putExtra("newsObject", b);
                 layout.getContext().startActivity(intent);
-
-                // ПОТОМ УДАЛИТЬ!
-                presenter.insertNewsToDB(adapter.getNewsNews().get(position));
-                // -------------
             }
         });
         recyclerViewNews.setAdapter(adapter);

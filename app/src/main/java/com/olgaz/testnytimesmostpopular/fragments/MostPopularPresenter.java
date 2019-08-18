@@ -68,7 +68,6 @@ public class MostPopularPresenter {
         try {
             cursor = database.query(DBNewsContract.NewsEntry.TABLE_NAME, null, null, null, null, null, null);
             while (cursor.moveToNext()) {
-                int id = cursor.getInt(cursor.getColumnIndex(DBNewsContract.NewsEntry.COLUMN_ID));
                 String url = cursor.getString(cursor.getColumnIndex(DBNewsContract.NewsEntry.COLUMN_URL));
                 String section = cursor.getString(cursor.getColumnIndex(DBNewsContract.NewsEntry.COLUMN_SECTION));
                 String title = cursor.getString(cursor.getColumnIndex(DBNewsContract.NewsEntry.COLUMN_TITLE));
@@ -90,7 +89,7 @@ public class MostPopularPresenter {
                 List<Media> mediaList = new ArrayList<>();
                 mediaList.add(media);
 
-                newsFromDB.add(new News((long)id, url, section, title, description, publishedDate, source, mediaList));
+                newsFromDB.add(new News(url, section, title, description, publishedDate, source, mediaList));
             }
             cursor.close();
         } catch (SQLiteException e) {
@@ -101,11 +100,29 @@ public class MostPopularPresenter {
         if (newsFromDB.size() > 0) view.showData(newsFromDB);
     }
 
+    public boolean isHasNewsInDB(String url) {
+        Cursor mCursor;
+        try {
+            // Query 1 row
+            mCursor = database.rawQuery(DBNewsContract.NewsEntry.COMMAND_EXISTS_NEWS, new String[]{url});
+
+            if  (mCursor.moveToFirst()) {
+                mCursor.close();
+                return true;
+            } else {
+                return false;
+            }
+
+        } catch (SQLiteException e) {
+            this.view.showInfo("Error searching in favorites");
+            return false;
+        }
+    }
+
     public void insertNewsToDB(News news) {
 
         if (news != null) {
             ContentValues newsValues = new ContentValues();
-            newsValues.put(DBNewsContract.NewsEntry.COLUMN_ID, news.getId());
             newsValues.put(DBNewsContract.NewsEntry.COLUMN_URL, news.getUrl());
             newsValues.put(DBNewsContract.NewsEntry.COLUMN_SECTION, news.getSection());
             newsValues.put(DBNewsContract.NewsEntry.COLUMN_TITLE, news.getTitle());

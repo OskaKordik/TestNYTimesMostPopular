@@ -11,9 +11,11 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Toast;
 
+import com.olgaz.testnytimesmostpopular.db.DBNewsContract;
 import com.olgaz.testnytimesmostpopular.fragments.MostPopularPresenter;
 import com.olgaz.testnytimesmostpopular.fragments.MostPopularView;
 import com.olgaz.testnytimesmostpopular.model.Media;
+import com.olgaz.testnytimesmostpopular.model.MediaMetadata;
 import com.olgaz.testnytimesmostpopular.model.News;
 
 import java.util.ArrayList;
@@ -25,12 +27,16 @@ public class DetailActivity extends AppCompatActivity implements MostPopularView
     private MostPopularPresenter presenter;
     private News news;
     private boolean isFavorites;
+    private MenuItem item;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+        init();
+    }
 
+    private void init() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -39,12 +45,30 @@ public class DetailActivity extends AppCompatActivity implements MostPopularView
         presenter = new MostPopularPresenter(this, getApplicationContext());
 
         Bundle bundle = getIntent().getBundleExtra("newsObject");
-        news = new News((long) 1, bundle.getString("detailUrl"), bundle.getString("section"),
-                bundle.getString("title"), "test", "test", "test", new ArrayList<Media>());
+        String url = bundle.getString("detailUrl");
+        String section = bundle.getString("section");
+        String title = bundle.getString("title");
+        String description = bundle.getString("description");
+        String publishedDate = bundle.getString("publishedDate");
+        String source = bundle.getString("source");
+        String mediaUrl = bundle.getString("mediaUrl");
 
-        /*
-        isFavorites = presenter.isHasNewsInDB(news.getId());
-         */
+        MediaMetadata mediaMetadata = new MediaMetadata();
+        mediaMetadata.setUrl(mediaUrl);
+
+        ArrayList<MediaMetadata> mediaMetadataList = new ArrayList<>();
+        mediaMetadataList.add(new MediaMetadata());
+        mediaMetadataList.add(mediaMetadata);
+
+        Media media = new Media();
+        media.setMediaMetadata(mediaMetadataList);
+
+        List<Media> mediaList = new ArrayList<>();
+        mediaList.add(media);
+
+        news = new News(url, section, title,description, publishedDate, source, mediaList);
+
+        isFavorites = presenter.isHasNewsInDB(news.getUrl());
 
         webViewDetail = findViewById(R.id.webViewDetail);
         urlDetail = news.getUrl();
@@ -55,6 +79,8 @@ public class DetailActivity extends AppCompatActivity implements MostPopularView
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_detail, menu);
+        item = menu.getItem(0);
+        if (isFavorites) item.setIcon(R.drawable.ic_favorite_white_24dp);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -62,7 +88,7 @@ public class DetailActivity extends AppCompatActivity implements MostPopularView
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_add_to_favorites:
-                actionAddToFavorites(item);
+                actionAddToFavorites();
                 return true;
             case R.id.action_share:
                 actionShare();
@@ -78,20 +104,18 @@ public class DetailActivity extends AppCompatActivity implements MostPopularView
         }
     }
 
-    private void actionAddToFavorites(MenuItem item) {
+    private void actionAddToFavorites() {
         if (isFavorites) {
             isFavorites = false;
             item.setIcon(R.drawable.ic_favorite_border_white_24dp);
-            Log.i("MyInfo", "Удалено из избранного: " + news.getTitle());
         } else {
             isFavorites = true;
             item.setIcon(R.drawable.ic_favorite_white_24dp);
-            Log.i("MyInfo", "Добавлено: " + news.getTitle());
+            presenter.insertNewsToDB(news);
         }
     }
 
     private void actionLoad() {
-
         //кэширования для загружаемого контента
         webViewDetail.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
         webViewDetail.loadUrl(urlDetail);
