@@ -53,8 +53,14 @@ public class FavoritesFragment extends Fragment implements MostPopularView {
             @Override
             public void onNewsClick(int position) {
                 Intent intent = new Intent(layout.getContext(), DetailActivity.class);
-                String detailNewsUrl = adapter.getNewsNews().get(position).getUrl();
-                intent.putExtra("detailUrl", detailNewsUrl);
+                News news = adapter.getNewsNews().get(position);
+                String detailNewsUrl = news.getUrl();
+                Bundle b = new Bundle();
+                b.putString("detailUrl", detailNewsUrl);
+                b.putString("section", news.getSection());
+                b.putString("title", news.getTitle());
+
+                intent.putExtra("newsObject", b);
                 layout.getContext().startActivity(intent);
             }
         });

@@ -26,7 +26,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
-class MostPopularPresenter {
+public class MostPopularPresenter {
     private MostPopularView view;
     private Disposable disposable;
     private SQLiteDatabase database;
@@ -43,7 +43,7 @@ class MostPopularPresenter {
         }
     }
 
-    void loadData(String tabArticle) {
+    public void loadData(String tabArticle) {
         ApiClient apiClient = ApiClient.getInstance();
         ApiService apiService = apiClient.getApiService();
         disposable = apiService.getResponseNews(tabArticle, ApiConstants.PERIOD, ApiConstants.API_KEY)
@@ -62,13 +62,13 @@ class MostPopularPresenter {
                 });
     }
 
-    void loadDataFromDB() {
+    public void loadDataFromDB() {
         List<News> newsFromDB = new ArrayList<>();
 
         try {
             cursor = database.query(DBNewsContract.NewsEntry.TABLE_NAME, null, null, null, null, null, null);
             while (cursor.moveToNext()) {
-                int id = cursor.getInt(cursor.getColumnIndex(DBNewsContract.NewsEntry._ID));
+                int id = cursor.getInt(cursor.getColumnIndex(DBNewsContract.NewsEntry.COLUMN_ID));
                 String url = cursor.getString(cursor.getColumnIndex(DBNewsContract.NewsEntry.COLUMN_URL));
                 String section = cursor.getString(cursor.getColumnIndex(DBNewsContract.NewsEntry.COLUMN_SECTION));
                 String title = cursor.getString(cursor.getColumnIndex(DBNewsContract.NewsEntry.COLUMN_TITLE));
@@ -101,10 +101,11 @@ class MostPopularPresenter {
         if (newsFromDB.size() > 0) view.showData(newsFromDB);
     }
 
-    void insertNewsToDB(News news) {
+    public void insertNewsToDB(News news) {
 
         if (news != null) {
             ContentValues newsValues = new ContentValues();
+            newsValues.put(DBNewsContract.NewsEntry.COLUMN_ID, news.getId());
             newsValues.put(DBNewsContract.NewsEntry.COLUMN_URL, news.getUrl());
             newsValues.put(DBNewsContract.NewsEntry.COLUMN_SECTION, news.getSection());
             newsValues.put(DBNewsContract.NewsEntry.COLUMN_TITLE, news.getTitle());
@@ -126,11 +127,11 @@ class MostPopularPresenter {
         }
     }
 
-    void disposeDisposable() {
+    public void disposeDisposable() {
         if (disposable != null) disposable.dispose();
     }
 
-    void closeDB() {
+    public void closeDB() {
         database.close();
     }
 
