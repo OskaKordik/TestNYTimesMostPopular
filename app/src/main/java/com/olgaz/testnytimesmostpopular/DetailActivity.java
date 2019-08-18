@@ -25,7 +25,6 @@ public class DetailActivity extends AppCompatActivity implements MostPopularView
     private String urlDetail;
     private WebView webViewDetail;
     private MostPopularPresenter presenter;
-    private News news;
     private boolean isFavorites;
     private MenuItem item;
 
@@ -44,35 +43,12 @@ public class DetailActivity extends AppCompatActivity implements MostPopularView
 
         presenter = new MostPopularPresenter(this, getApplicationContext());
 
-        Bundle bundle = getIntent().getBundleExtra("newsObject");
-        String url = bundle.getString("detailUrl");
-        String section = bundle.getString("section");
-        String title = bundle.getString("title");
-        String description = bundle.getString("description");
-        String publishedDate = bundle.getString("publishedDate");
-        String source = bundle.getString("source");
-        String mediaUrl = bundle.getString("mediaUrl");
-
-        MediaMetadata mediaMetadata = new MediaMetadata();
-        mediaMetadata.setUrl(mediaUrl);
-
-        ArrayList<MediaMetadata> mediaMetadataList = new ArrayList<>();
-        mediaMetadataList.add(new MediaMetadata());
-        mediaMetadataList.add(mediaMetadata);
-
-        Media media = new Media();
-        media.setMediaMetadata(mediaMetadataList);
-
-        List<Media> mediaList = new ArrayList<>();
-        mediaList.add(media);
-
-        news = new News(url, section, title,description, publishedDate, source, mediaList);
-
-        isFavorites = presenter.isHasNewsInDB(news.getUrl());
+        urlDetail = getIntent().getStringExtra("detailNewsUrl");
+        int isFavoritesInt = getIntent().getIntExtra("isFavorites", 0);
+        if (isFavoritesInt == 1) isFavorites = true;
+        else isFavorites = false;
 
         webViewDetail = findViewById(R.id.webViewDetail);
-        urlDetail = news.getUrl();
-
         actionLoad();
     }
 
@@ -111,7 +87,7 @@ public class DetailActivity extends AppCompatActivity implements MostPopularView
         } else {
             isFavorites = true;
             item.setIcon(R.drawable.ic_favorite_white_24dp);
-            presenter.insertNewsToDB(news);
+            presenter.insertToFavorites(urlDetail);
         }
     }
 

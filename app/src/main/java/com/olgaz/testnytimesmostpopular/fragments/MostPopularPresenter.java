@@ -32,6 +32,7 @@ public class MostPopularPresenter {
     private SQLiteDatabase database;
     private SQLiteOpenHelper dbHelper;
     private Cursor cursor;
+    private static List<News> newsFromNetwork = new ArrayList<>();
 
     public MostPopularPresenter(MostPopularView view, Context context) {
         this.view = view;
@@ -52,7 +53,8 @@ public class MostPopularPresenter {
                 .subscribe(new Consumer<NewsResults>() {
                     @Override
                     public void accept(NewsResults newsResults) throws Exception {
-                        view.showData(newsResults.getResults());
+                        MostPopularPresenter.newsFromNetwork.addAll(newsResults.getResults());
+                        view.showData(newsFromNetwork);
                     }
                 }, new Consumer<Throwable>() {
                     @Override
@@ -119,7 +121,19 @@ public class MostPopularPresenter {
         }
     }
 
-    public void insertNewsToDB(News news) {
+    public void insertToFavorites(String url) {
+        if (!newsFromNetwork.isEmpty()) {
+            News newNews = null;
+            for (News news: newsFromNetwork) {
+                if (news.getUrl().equals(url)) newNews = news;
+            }
+            insertNewsToDB(newNews);
+        } else {
+            Log.i("MyInfo", "newsFromNetwork isEmpty!");
+        }
+    }
+
+    private void insertNewsToDB(News news) {
 
         if (news != null) {
             ContentValues newsValues = new ContentValues();

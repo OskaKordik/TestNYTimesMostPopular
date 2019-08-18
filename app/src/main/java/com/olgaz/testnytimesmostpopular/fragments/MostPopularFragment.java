@@ -75,16 +75,11 @@ public class MostPopularFragment extends Fragment implements MostPopularView {
                 Intent intent = new Intent(layout.getContext(), DetailActivity.class);
                 News news = adapter.getNewsNews().get(position);
                 String detailNewsUrl = news.getUrl();
-                Bundle b = new Bundle();
-                b.putString("detailUrl", detailNewsUrl);
-                b.putString("section", news.getSection());
-                b.putString("title", news.getTitle());
-                b.putString("description", news.getDescription());
-                b.putString("publishedDate", news.getPublishedDate());
-                b.putString("source", news.getSource());
-                b.putString("mediaUrl", news.getMedia().get(0).getMediaMetadata().get(1).getUrl());
-
-                intent.putExtra("newsObject", b);
+                int isFavorites;
+                if (presenter.isHasNewsInDB(news.getUrl())) isFavorites = 1;
+                else isFavorites = 0;
+                intent.putExtra("detailNewsUrl", detailNewsUrl);
+                intent.putExtra("isFavorites", isFavorites);
                 layout.getContext().startActivity(intent);
             }
         });
