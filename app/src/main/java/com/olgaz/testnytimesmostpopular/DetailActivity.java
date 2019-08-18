@@ -1,14 +1,20 @@
 package com.olgaz.testnytimesmostpopular;
 
+import android.content.Intent;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.Toast;
 
 public class DetailActivity extends AppCompatActivity {
+    private String urlDetail;
+    private WebView webViewDetail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,30 +26,51 @@ public class DetailActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        WebView webViewDetail = findViewById(R.id.webViewDetail);
+        webViewDetail = findViewById(R.id.webViewDetail);
+        urlDetail = getIntent().getStringExtra("detailUrl");
+
+        actionLoad();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_detail, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_add_to_favorites:
+                item.setIcon(R.drawable.ic_favorite_white_24dp);
+                Toast.makeText(this, "добавлено в избранное", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.action_share:
+                actionShare();
+                return true;
+            case R.id.action_refresh:
+                actionLoad();
+                return true;
+            case R.id.open_favorites:
+                startActivity(new Intent(this, FavoritesActivity.class));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void actionLoad() {
         //кэширования для загружаемого контента
         webViewDetail.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
-        String urlDetail = getIntent().getStringExtra("detailUrl");
         webViewDetail.loadUrl(urlDetail);
     }
-//
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the app bar.
-//        getMenuInflater().inflate(R.menu.menu_detail, menu);
-//        return super.onCreateOptionsMenu(menu);
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        switch (item.getItemId()) {
-//            case R.id.action_add_to_favorites:
-//                item.setIcon(R.drawable.baseline_favorite_white_24);
-//                return true;
-//            default:
-//                return super.onOptionsItemSelected(item);
-//        }
-//    }
+
+    private void actionShare(){
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_TEXT, urlDetail);
+        startActivity(intent);
+    }
 
     @Override
     public boolean onSupportNavigateUp() {
