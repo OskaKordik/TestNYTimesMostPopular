@@ -102,7 +102,7 @@ public class FavoritesFragment extends Fragment implements MostPopularView {
 
     @Override
     public void onDestroy() {
-        presenter.closeDB();
+        presenter.disposeDisposable();
         super.onDestroy();
     }
 }

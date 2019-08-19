@@ -141,10 +141,4 @@ public class DetailActivity extends AppCompatActivity implements MostPopularView
         });
         snackbar.show();
     }
-
-    @Override
-    protected void onDestroy() {
-        presenter.closeDB();
-        super.onDestroy();
-    }
 }

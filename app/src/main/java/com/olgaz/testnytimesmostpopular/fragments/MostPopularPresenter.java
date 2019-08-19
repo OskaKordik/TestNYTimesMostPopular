@@ -29,24 +29,15 @@ import io.reactivex.schedulers.Schedulers;
 public class MostPopularPresenter {
     private MostPopularView view;
     private Disposable disposable;
-    private SQLiteDatabase database;
-    private SQLiteOpenHelper dbHelper;
     private DBNewsHandler dbNewsHandler;
-    private Cursor cursor;
     private static List<News> newsFromNetwork = new ArrayList<>();
 
     public MostPopularPresenter(MostPopularView view, Context context) {
         this.view = view;
-        dbHelper = new DBNewsHelper(context);
         dbNewsHandler = new DBNewsHandler(context);
-        try {
-            database = dbHelper.getWritableDatabase();
-        } catch (SQLiteException e) {
-            this.view.showInfo("Database unavailable");
-        }
     }
 
-    public void loadData(String tabArticle) {
+    void loadData(String tabArticle) {
         ApiClient apiClient = ApiClient.getInstance();
         ApiService apiService = apiClient.getApiService();
         disposable = apiService.getResponseNews(tabArticle, ApiConstants.PERIOD, ApiConstants.API_KEY)
@@ -66,41 +57,8 @@ public class MostPopularPresenter {
                 });
     }
 
-    public void loadDataFromDB() {
-        List<News> newsFromDB = new ArrayList<>();
-
-        try {
-            cursor = database.query(DBNewsContract.NewsEntry.TABLE_NAME, null, null, null, null, null, null);
-            while (cursor.moveToNext()) {
-                String url = cursor.getString(cursor.getColumnIndex(DBNewsContract.NewsEntry.COLUMN_URL));
-                String section = cursor.getString(cursor.getColumnIndex(DBNewsContract.NewsEntry.COLUMN_SECTION));
-                String title = cursor.getString(cursor.getColumnIndex(DBNewsContract.NewsEntry.COLUMN_TITLE));
-                String description = cursor.getString(cursor.getColumnIndex(DBNewsContract.NewsEntry.COLUMN_DESCRIPTION));
-                String publishedDate = cursor.getString(cursor.getColumnIndex(DBNewsContract.NewsEntry.COLUMN_PUBLISHED_DATA));
-                String source = cursor.getString(cursor.getColumnIndex(DBNewsContract.NewsEntry.COLUMN_SOURCE));
-                String mediaUrl = cursor.getString(cursor.getColumnIndex(DBNewsContract.NewsEntry.COLUMN_MEDIA_URL));
-
-                MediaMetadata mediaMetadata = new MediaMetadata();
-                mediaMetadata.setUrl(mediaUrl);
-
-                ArrayList<MediaMetadata> mediaMetadataList = new ArrayList<>();
-                mediaMetadataList.add(new MediaMetadata());
-                mediaMetadataList.add(mediaMetadata);
-
-                Media media = new Media();
-                media.setMediaMetadata(mediaMetadataList);
-
-                List<Media> mediaList = new ArrayList<>();
-                mediaList.add(media);
-
-                newsFromDB.add(new News(url, section, title, description, publishedDate, source, mediaList));
-            }
-            cursor.close();
-        } catch (SQLiteException e) {
-            this.view.showInfo("Failed to read from DB");
-            Log.i("MyInfo", e.getMessage());
-        }
-
+    void loadDataFromDB() {
+        List<News> newsFromDB = dbNewsHandler.loadNewsData();
         if (newsFromDB.size() > 0) view.showData(newsFromDB);
     }
 
@@ -136,12 +94,7 @@ public class MostPopularPresenter {
         }
     }
 
-    public void disposeDisposable() {
+    void disposeDisposable() {
         if (disposable != null) disposable.dispose();
     }
-
-    public void closeDB() {
-        database.close();
-    }
-
 }

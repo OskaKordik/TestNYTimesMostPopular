@@ -5,6 +5,9 @@ import android.content.Context;
 
 import com.olgaz.testnytimesmostpopular.model.News;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DBNewsHandler {
     private DBNewsHelper dbNewsHelper;
 
@@ -30,5 +33,9 @@ public class DBNewsHandler {
 
     public boolean isHasNews(String url) {
         return dbNewsHelper.isHasNewsInFavorites(url);
+    }
+
+    public List<News> loadNewsData(){
+        return dbNewsHelper.loadNews();
     }
 }
