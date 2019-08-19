@@ -1,27 +1,20 @@
 package com.olgaz.testnytimesmostpopular;
 
 import android.content.Intent;
-import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.widget.Toast;
 
-import com.olgaz.testnytimesmostpopular.db.DBNewsContract;
 import com.olgaz.testnytimesmostpopular.fragments.MostPopularPresenter;
 import com.olgaz.testnytimesmostpopular.fragments.MostPopularView;
-import com.olgaz.testnytimesmostpopular.model.Media;
-import com.olgaz.testnytimesmostpopular.model.MediaMetadata;
 import com.olgaz.testnytimesmostpopular.model.News;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class DetailActivity extends AppCompatActivity implements MostPopularView {
