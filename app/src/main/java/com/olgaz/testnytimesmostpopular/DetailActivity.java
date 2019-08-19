@@ -1,6 +1,7 @@
 package com.olgaz.testnytimesmostpopular;
 
 import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -32,7 +33,14 @@ public class DetailActivity extends AppCompatActivity implements MostPopularView
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+        if (savedInstanceState != null) isFavorites = savedInstanceState.getBoolean("isFavorites");
         init();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putBoolean("isFavorites", isFavorites);
+        super.onSaveInstanceState(savedInstanceState);
     }
 
     private void init() {
