@@ -2,6 +2,7 @@ package com.olgaz.testnytimesmostpopular;
 
 import android.content.Intent;
 import android.os.Handler;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.olgaz.testnytimesmostpopular.adapters.NewsAdapter;
@@ -83,7 +85,7 @@ public class FavoritesActivity extends AppCompatActivity implements MostPopularV
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.delete_all_from_favorites:
-                //удалить все из БД
+                presenter.deleteAllDataFromDB();
                 presenter.loadDataFromDB();
                 return true;
             default:
@@ -98,7 +100,7 @@ public class FavoritesActivity extends AppCompatActivity implements MostPopularV
 
     @Override
     public void showInfo(String info) {
-        Toast.makeText(this, info, Toast.LENGTH_SHORT).show();
+        Snackbar.make(findViewById(R.id.favorites_activity), info, Snackbar.LENGTH_LONG).show();
     }
 
 

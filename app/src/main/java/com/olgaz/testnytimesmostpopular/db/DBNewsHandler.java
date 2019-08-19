@@ -26,6 +26,10 @@ public class DBNewsHandler {
         dbNewsHelper.insertData(newsValues);
     }
 
+    public void deleteAllNewsData() {
+        dbNewsHelper.deleteAllNews();
+    }
+
     public void deleteNewsData(String url){
         dbNewsHelper.deleteData(url);
     }

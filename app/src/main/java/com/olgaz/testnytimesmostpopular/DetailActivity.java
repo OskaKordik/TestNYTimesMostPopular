@@ -127,7 +127,7 @@ public class DetailActivity extends AppCompatActivity implements MostPopularView
 
     @Override
     public void showData(List<News> news) {
-
+        actionLoad();
     }
 
     @Override

@@ -54,6 +54,11 @@ public class MostPopularPresenter {
         view.showData(newsFromDB);
     }
 
+    public void deleteAllDataFromDB() {
+        dbNewsHandler.deleteAllNewsData();
+        view.showInfo("Favorites list cleared");
+    }
+
     public boolean isHasNewsInDB(String url) {
         return dbNewsHandler.isHasNews(url);
     }

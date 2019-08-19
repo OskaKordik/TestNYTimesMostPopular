@@ -97,6 +97,16 @@ public class DBNewsHelper extends SQLiteOpenHelper {
         return news;
     }
 
+    public void deleteAllNews() {
+        try {
+            SQLiteDatabase db =  this.getWritableDatabase();
+            db.delete(DBNewsContract.NewsEntry.TABLE_NAME, null, null);
+            db.close();
+        } catch (SQLiteException e) {
+            Log.i("MyInfo", "Error delete all from favorites");
+        }
+    }
+
     private class DeleteDataTask extends AsyncTask<String, Void, Void> {
 
         @Override
