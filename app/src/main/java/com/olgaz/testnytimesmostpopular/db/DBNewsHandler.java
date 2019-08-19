@@ -27,4 +27,8 @@ public class DBNewsHandler {
     public void deleteNewsData(String url){
         dbNewsHelper.deleteData(url);
     }
+
+    public boolean isHasNews(String url) {
+        return dbNewsHelper.isHasNewsInFavorites(url);
+    }
 }

@@ -1,6 +1,5 @@
 package com.olgaz.testnytimesmostpopular.fragments;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -105,23 +104,8 @@ public class MostPopularPresenter {
         if (newsFromDB.size() > 0) view.showData(newsFromDB);
     }
 
-    public boolean isHasNewsInDB(String url) {
-        Cursor mCursor;
-        try {
-            // Query 1 row
-            mCursor = database.rawQuery(DBNewsContract.NewsEntry.COMMAND_EXISTS_NEWS, new String[]{url});
-
-            if  (mCursor.moveToFirst()) {
-                mCursor.close();
-                return true;
-            } else {
-                return false;
-            }
-
-        } catch (SQLiteException e) {
-            this.view.showInfo("Error searching in favorites");
-            return false;
-        }
+    boolean isHasNewsInDB(String url) {
+        return dbNewsHandler.isHasNews(url);
     }
 
     public void insertToFavorites(String url) {
@@ -132,7 +116,7 @@ public class MostPopularPresenter {
             }
             insertNewsToDB(newNews);
         } else {
-            Log.i("MyInfo", "newsFromNetwork isEmpty OR news isHasNewsInDB!");
+            Log.i("MyInfo", "newsFromNetwork isEmpty OR news isHasNews!");
         }
     }
 

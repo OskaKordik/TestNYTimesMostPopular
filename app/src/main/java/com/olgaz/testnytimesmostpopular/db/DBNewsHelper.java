@@ -2,6 +2,7 @@ package com.olgaz.testnytimesmostpopular.db;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -33,6 +34,24 @@ public class DBNewsHelper extends SQLiteOpenHelper {
 
     void deleteData(String url) {
         new DeleteDataTask().execute(url);
+    }
+
+    boolean isHasNewsInFavorites(String url) {
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            Cursor mCursor = db.rawQuery(DBNewsContract.NewsEntry.COMMAND_EXISTS_NEWS, new String[]{url});
+
+            if  (mCursor.moveToFirst()) {
+                mCursor.close();
+                return true;
+            } else {
+                return false;
+            }
+
+        } catch (SQLiteException e) {
+            Log.i("MyInfo", "Error searching in favorites");
+            return false;
+        }
     }
 
     private class DeleteDataTask extends AsyncTask<String, Void, Void> {
