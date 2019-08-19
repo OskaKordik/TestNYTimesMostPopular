@@ -5,7 +5,6 @@ import android.content.Context;
 
 import com.olgaz.testnytimesmostpopular.model.News;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class DBNewsHandler {

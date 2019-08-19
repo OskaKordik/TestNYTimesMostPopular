@@ -20,7 +20,7 @@ public class DBNewsHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "news.db";
     private static final int DB_VERSION = 1;
 
-    public DBNewsHelper(Context context) {
+    DBNewsHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
     }
 

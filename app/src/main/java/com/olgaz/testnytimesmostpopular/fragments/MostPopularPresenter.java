@@ -1,20 +1,12 @@
 package com.olgaz.testnytimesmostpopular.fragments;
 
 import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.olgaz.testnytimesmostpopular.api.ApiClient;
 import com.olgaz.testnytimesmostpopular.api.ApiConstants;
 import com.olgaz.testnytimesmostpopular.api.ApiService;
-import com.olgaz.testnytimesmostpopular.db.DBNewsContract;
 import com.olgaz.testnytimesmostpopular.db.DBNewsHandler;
-import com.olgaz.testnytimesmostpopular.db.DBNewsHelper;
-import com.olgaz.testnytimesmostpopular.model.Media;
-import com.olgaz.testnytimesmostpopular.model.MediaMetadata;
 import com.olgaz.testnytimesmostpopular.model.News;
 import com.olgaz.testnytimesmostpopular.model.NewsResults;
 
@@ -57,12 +49,12 @@ public class MostPopularPresenter {
                 });
     }
 
-    void loadDataFromDB() {
+    public void loadDataFromDB() {
         List<News> newsFromDB = dbNewsHandler.loadNewsData();
-        if (newsFromDB.size() > 0) view.showData(newsFromDB);
+        view.showData(newsFromDB);
     }
 
-    boolean isHasNewsInDB(String url) {
+    public boolean isHasNewsInDB(String url) {
         return dbNewsHandler.isHasNews(url);
     }
 
@@ -94,7 +86,7 @@ public class MostPopularPresenter {
         }
     }
 
-    void disposeDisposable() {
+    public void disposeDisposable() {
         if (disposable != null) disposable.dispose();
     }
 }
