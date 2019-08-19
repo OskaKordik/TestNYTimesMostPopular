@@ -122,19 +122,18 @@ public class MostPopularPresenter {
     }
 
     public void insertToFavorites(String url) {
-        if (!newsFromNetwork.isEmpty()) {
+        if (!newsFromNetwork.isEmpty() && !isHasNewsInDB(url)) {
             News newNews = null;
             for (News news: newsFromNetwork) {
                 if (news.getUrl().equals(url)) newNews = news;
             }
             insertNewsToDB(newNews);
         } else {
-            Log.i("MyInfo", "newsFromNetwork isEmpty!");
+            Log.i("MyInfo", "newsFromNetwork isEmpty OR news isHasNewsInDB!");
         }
     }
 
     private void insertNewsToDB(News news) {
-        //
 
         if (news != null) {
             ContentValues newsValues = new ContentValues();
