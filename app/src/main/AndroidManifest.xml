@@ -27,7 +27,8 @@
 
         <activity
             android:name=".FavoritesActivity"
-            android:label="" />
+            android:label="Favorites"
+            android:parentActivityName=".MainActivity" />
 
     </application>
 
