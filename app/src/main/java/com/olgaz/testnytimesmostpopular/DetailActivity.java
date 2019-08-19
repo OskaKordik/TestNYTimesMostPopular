@@ -2,12 +2,14 @@ package com.olgaz.testnytimesmostpopular;
 
 import android.content.Intent;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Toast;
@@ -99,13 +101,19 @@ public class DetailActivity extends AppCompatActivity implements MostPopularView
         }
     }
 
+    private void actionRemoveFromFavorites() {
+        isFavorites = false;
+        item.setIcon(R.drawable.ic_favorite_border_white_24dp);
+        // удалить из бд
+    }
+
     private void actionLoad() {
         //кэширования для загружаемого контента
         webViewDetail.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
         webViewDetail.loadUrl(urlDetail);
     }
 
-    private void actionShare(){
+    private void actionShare() {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
         intent.putExtra(Intent.EXTRA_TEXT, urlDetail);
@@ -125,7 +133,15 @@ public class DetailActivity extends AppCompatActivity implements MostPopularView
 
     @Override
     public void showInfo(String info) {
-        Toast.makeText(this, info, Toast.LENGTH_SHORT).show();
+        Snackbar snackbar = Snackbar.make(findViewById(R.id.webViewDetail), info, Snackbar.LENGTH_LONG);
+        snackbar.setAction("Undo", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                actionRemoveFromFavorites();
+                Snackbar.make(v, "Undone!", Snackbar.LENGTH_SHORT).show();
+            }
+        });
+        snackbar.show();
     }
 
     @Override

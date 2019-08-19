@@ -134,6 +134,7 @@ public class MostPopularPresenter {
     }
 
     private void insertNewsToDB(News news) {
+        //
 
         if (news != null) {
             ContentValues newsValues = new ContentValues();
