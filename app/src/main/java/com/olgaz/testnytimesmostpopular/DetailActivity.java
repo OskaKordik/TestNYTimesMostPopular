@@ -74,7 +74,7 @@ public class DetailActivity extends AppCompatActivity implements MostPopularView
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_add_to_favorites:
-                actionAddToFavorites();
+                actionFavorites();
                 return true;
             case R.id.action_share:
                 actionShare();
@@ -90,10 +90,9 @@ public class DetailActivity extends AppCompatActivity implements MostPopularView
         }
     }
 
-    private void actionAddToFavorites() {
+    private void actionFavorites() {
         if (isFavorites) {
-            isFavorites = false;
-            item.setIcon(R.drawable.ic_favorite_border_white_24dp);
+            actionRemoveFromFavorites();
         } else {
             isFavorites = true;
             item.setIcon(R.drawable.ic_favorite_white_24dp);
@@ -104,7 +103,7 @@ public class DetailActivity extends AppCompatActivity implements MostPopularView
     private void actionRemoveFromFavorites() {
         isFavorites = false;
         item.setIcon(R.drawable.ic_favorite_border_white_24dp);
-        // удалить из бд
+        presenter.deleteNewsFromFavorites(urlDetail);
     }
 
     private void actionLoad() {
@@ -137,8 +136,7 @@ public class DetailActivity extends AppCompatActivity implements MostPopularView
         snackbar.setAction("Undo", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                actionRemoveFromFavorites();
-                Snackbar.make(v, "Undone!", Snackbar.LENGTH_SHORT).show();
+                actionFavorites();
             }
         });
         snackbar.show();

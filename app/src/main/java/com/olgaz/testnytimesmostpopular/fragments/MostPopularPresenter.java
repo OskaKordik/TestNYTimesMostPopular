@@ -12,6 +12,7 @@ import com.olgaz.testnytimesmostpopular.api.ApiClient;
 import com.olgaz.testnytimesmostpopular.api.ApiConstants;
 import com.olgaz.testnytimesmostpopular.api.ApiService;
 import com.olgaz.testnytimesmostpopular.db.DBNewsContract;
+import com.olgaz.testnytimesmostpopular.db.DBNewsHandler;
 import com.olgaz.testnytimesmostpopular.db.DBNewsHelper;
 import com.olgaz.testnytimesmostpopular.model.Media;
 import com.olgaz.testnytimesmostpopular.model.MediaMetadata;
@@ -31,12 +32,14 @@ public class MostPopularPresenter {
     private Disposable disposable;
     private SQLiteDatabase database;
     private SQLiteOpenHelper dbHelper;
+    private DBNewsHandler dbNewsHandler;
     private Cursor cursor;
     private static List<News> newsFromNetwork = new ArrayList<>();
 
     public MostPopularPresenter(MostPopularView view, Context context) {
         this.view = view;
         dbHelper = new DBNewsHelper(context);
+        dbNewsHandler = new DBNewsHandler(context);
         try {
             database = dbHelper.getWritableDatabase();
         } catch (SQLiteException e) {
@@ -133,28 +136,19 @@ public class MostPopularPresenter {
         }
     }
 
+    public void deleteNewsFromFavorites(String url) {
+        if (isHasNewsInDB(url)) {
+            dbNewsHandler.deleteNewsData(url);
+            view.showInfo("Delete from favorites");
+        }
+    }
+
     private void insertNewsToDB(News news) {
-
         if (news != null) {
-            ContentValues newsValues = new ContentValues();
-            newsValues.put(DBNewsContract.NewsEntry.COLUMN_URL, news.getUrl());
-            newsValues.put(DBNewsContract.NewsEntry.COLUMN_SECTION, news.getSection());
-            newsValues.put(DBNewsContract.NewsEntry.COLUMN_TITLE, news.getTitle());
-            newsValues.put(DBNewsContract.NewsEntry.COLUMN_DESCRIPTION, news.getDescription());
-            newsValues.put(DBNewsContract.NewsEntry.COLUMN_PUBLISHED_DATA, news.getPublishedDate());
-            newsValues.put(DBNewsContract.NewsEntry.COLUMN_SOURCE, news.getSource());
-            newsValues.put(DBNewsContract.NewsEntry.COLUMN_MEDIA_URL, news.getMedia().get(0).getMediaMetadata().get(1).getUrl());
-
-            try {
-                // Insert the new entry into the DB.
-                database.insert(DBNewsContract.NewsEntry.TABLE_NAME, null, newsValues);
-                view.showInfo("Added to favorites");
-            } catch (SQLiteException e) {
-                this.view.showInfo("Error adding to favorites");
-            }
-
+            dbNewsHandler.saveNewsData(news);
+            view.showInfo("Added to favorites");
         } else {
-            view.showInfo("Empty object passed!");
+            Log.i("MyInfo", "Empty object passed!");
         }
     }
 
